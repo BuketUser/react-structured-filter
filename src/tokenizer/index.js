@@ -350,27 +350,29 @@ export default class Tokenizer extends Component {
   }
 
   _addTokenForValue( value ) {
+    let assignValue = value || '';
+
     if ( this.state.category === '' ) {
-      this.setState({ category: value });
+      this.setState({ category: assignValue });
       this.refs.typeahead.refs.inner.setEntryText( '' );
       return;
     }
-	
-	if (this.state.operator === '') {
-      if(['!empty', 'empty','is on', 'is off'].indexOf(value)<0){
-          this.setState({ operator: value });
-          this.refs.typeahead.refs.inner.setEntryText('');
-          return;
+
+    if (this.state.operator === '') {
+      if (['!empty', 'empty', 'is on', 'is off'].indexOf( assignValue ) < 0) {
+        this.setState({ operator: assignValue });
+        this.refs.typeahead.refs.inner.setEntryText('');
+        return;
       } else {
-          newState.operator = value;
-          value = '';
+        this.state.operator = assignValue;
+        assignValue = '';
       }
     }
 
     const newValue = {
       category: this.state.category,
       operator: this.state.operator,
-      value,
+      assignValue,
     };
 
     this.state.selected.push( newValue );
@@ -383,7 +385,6 @@ export default class Tokenizer extends Component {
       operator: '',
     });
 
-    
     return;
   }
 

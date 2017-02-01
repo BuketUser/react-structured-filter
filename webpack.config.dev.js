@@ -28,7 +28,7 @@ module.exports = {
     },
   },
   module: {
-    preLoaders: [
+    /*preLoaders: [
       {
         test: /\.(js|jsx)$/,
         loader: 'eslint',
@@ -38,7 +38,7 @@ module.exports = {
           // path.resolve( __dirname, 'example/src' ),
         ],
       },
-    ],
+    ],*/
     loaders: [
       {
         test: /\.(js|jsx)$/,
