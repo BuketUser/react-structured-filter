@@ -13,8 +13,8 @@
     "classnames": "^2.2.3",
     "fuzzy": "^0.1.0",
     "moment": "*",
-    "react-datetime": "^2.1.0",
-    "react-onclickoutside": "^4.9.0"
+    "react-onclickoutside": "^4.9.0",
+    "react-datepicker": "^0.40.0"
   },
   "devDependencies": {
     "babel-cli": "^6.7.5",

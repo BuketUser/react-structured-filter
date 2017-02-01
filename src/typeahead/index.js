@@ -9,9 +9,8 @@ import ReactDOM from 'react-dom';
 import classNames from 'classnames';
 import moment from 'moment';
 import fuzzy from 'fuzzy';
-import Datetime from 'react-datetime';
-import 'react-datetime/css/react-datetime.css';
 import listensToClickOutside from 'react-onclickoutside/decorator';
+import DatePicker from 'react-datepicker/datepicker.js';
 
 import TypeaheadSelector from './selector';
 import KeyEvent from '../keyevent';
@@ -278,13 +277,13 @@ class Typeahead extends Component {
           className={ classList }
           onFocus={ this._onFocus }
         >
-          <Datetime
-            ref="datepicker"
-            dateFormat={ "ll" }
-            defaultValue={ defaultDate }
-            onBlur={ this._handleDateChange }
-            open={ this.state.focused }
-          />
+        <DatePicker
+          ref="datepicker"
+          dateFormat={"YYYY-MM-DD"}
+          selected={moment()}
+          onChange={this._handleDateChange}
+          onKeyDown={this._onKeyDown}
+        />
         </span>
       );
     }
