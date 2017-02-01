@@ -372,7 +372,7 @@ export default class Tokenizer extends Component {
     const newValue = {
       category: this.state.category,
       operator: this.state.operator,
-      assignValue,
+      value: assignValue,
     };
 
     this.state.selected.push( newValue );
