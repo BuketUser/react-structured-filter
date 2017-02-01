@@ -177,10 +177,11 @@ export default class Tokenizer extends Component {
     placeholder: '',
     onChange() {},
     operators: {
-      textoptions: [ `==`, `!=` ],
-      text: [ `==`, `!=`, `contains`, `!contains` ],
-      number: [ `==`, `!=`, `<`, `<=`, `>`, `>=` ],
-      date: [ `==`, `!=`, `<`, `<=`, `>`, `>=` ],
+		textoptions: [ '!empty', 'empty', '==', '!='],
+		text: [ '!empty', 'empty','==', '!=', 'contains', '!contains'],
+		number: [ '!empty', 'empty','==', '!=', '<', '<=', '>', '>='],
+		date: [ '!empty', 'empty','==', '!=', '<', '<=', '>', '>=', 'in last days' ],
+		bool: [ '!empty', 'empty','is on', 'is off' ]
     },
   }
 
@@ -254,6 +255,7 @@ export default class Tokenizer extends Component {
         case 'textoptions': return operators.textoptions;
         case 'date': return operators.date;
         case 'number': return operators.number;
+        case 'bool':return operators.bool;
         default:
           /* eslint-disable no-console */
           console.warn( `WARNING: Unknown category type in tokenizer: "${categoryType}"` );
@@ -353,11 +355,16 @@ export default class Tokenizer extends Component {
       this.refs.typeahead.refs.inner.setEntryText( '' );
       return;
     }
-
-    if ( this.state.operator === '' ) {
-      this.setState({ operator: value });
-      this.refs.typeahead.refs.inner.setEntryText( '' );
-      return;
+	
+	if (this.state.operator === '') {
+      if(['!empty', 'empty','is on', 'is off'].indexOf(value)<0){
+          this.setState({ operator: value });
+          this.refs.typeahead.refs.inner.setEntryText('');
+          return;
+      } else {
+          newState.operator = value;
+          value = '';
+      }
     }
 
     const newValue = {
@@ -376,6 +383,7 @@ export default class Tokenizer extends Component {
       operator: '',
     });
 
+    
     return;
   }
 
