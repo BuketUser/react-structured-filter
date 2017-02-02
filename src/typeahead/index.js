@@ -11,6 +11,7 @@ import moment from 'moment';
 import fuzzy from 'fuzzy';
 import listensToClickOutside from 'react-onclickoutside/decorator';
 import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.min.css';
 
 import TypeaheadSelector from './selector';
 import KeyEvent from '../keyevent';
@@ -78,6 +79,12 @@ class Typeahead extends Component {
     selection: null,
   }
 
+  componentDidMount() {
+    if ( this.datePicker ) {
+      this.datePicker.focus();
+    }
+  }
+
   componentWillReceiveProps( nextProps ) {
     this.setState({
       options: nextProps.options,
@@ -104,6 +111,8 @@ class Typeahead extends Component {
     }
     this._onTextEntryUpdated();
   }
+
+  datePicker = null;
 
   _renderIncrementalSearchResults() {
     if ( !this.state.focused ) {
@@ -239,7 +248,7 @@ class Typeahead extends Component {
   _handleDateChange( date ) {
     let newDate = moment( date, 'YYYY-MM-DD' );
     if ( !newDate.isValid()) newDate = moment();
-    this.props.onOptionSelected( newDate.format( 'YYYY-MM-DD'  ));
+    this.props.onOptionSelected( newDate.format( 'YYYY-MM-DD' ));
   }
 
   _showDatePicker() {
@@ -270,7 +279,7 @@ class Typeahead extends Component {
 
     if ( this._showDatePicker()) {
       let defaultDate = moment( this.state.entryValue, 'YYYY-MM-DD' );
-      if ( !defaultDate.isValid()) defaultDate = moment().format('YYYY-MM-DD' );
+      if ( !defaultDate.isValid()) defaultDate = moment().format( 'YYYY-MM-DD' );
       return (
         <span
           ref="input"
@@ -278,11 +287,12 @@ class Typeahead extends Component {
           onFocus={ this._onFocus }
         >
         <DatePicker
-          ref="datepicker"
-          dateFormat={"YYYY-MM-DD"}
-          selected={moment()}
-          onChange={this._handleDateChange}
-          onKeyDown={this._onKeyDown}
+          ref={e => this.datePicker = e}
+          dateFormat={ "YYYY-MM-DD" }
+          selected={ moment() }
+          onChange={ this._handleDateChange }
+          onKeyDown={ this._onKeyDown }
+          locale={ "lt" }
         />
         </span>
       );
