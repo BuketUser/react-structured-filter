@@ -79,12 +79,6 @@ class Typeahead extends Component {
     selection: null,
   }
 
-  componentDidMount() {
-    if ( this.datePicker ) {
-      this.datePicker.focus();
-    }
-  }
-
   componentWillReceiveProps( nextProps ) {
     this.setState({
       options: nextProps.options,
@@ -111,8 +105,6 @@ class Typeahead extends Component {
     }
     this._onTextEntryUpdated();
   }
-
-  datePicker = null;
 
   _renderIncrementalSearchResults() {
     if ( !this.state.focused ) {
@@ -287,11 +279,12 @@ class Typeahead extends Component {
           onFocus={ this._onFocus }
         >
         <DatePicker
-          ref={e => this.datePicker = e}
+          ref={ 'datepicker' }
           dateFormat={ "YYYY-MM-DD" }
           selected={ moment() }
           onChange={ this._handleDateChange }
           onKeyDown={ this._onKeyDown }
+          autoFocus={ true }
           locale={ "lt" }
         />
         </span>
