@@ -9,6 +9,7 @@ import KeyEvent from '../keyevent';
 import Typeahead from '../typeahead';
 import classNames from 'classnames';
 import objectAssign from 'object-assign';
+import '../react-structured-filter.css';
 
 /**
  * A typeahead that, when an option is selected, instead of simply filling
@@ -167,6 +168,31 @@ export default class Tokenizer extends Component {
      * ```
      */
     operators: PropTypes.object,
+    /**
+     * Translations for selection lists headers
+     * Example:
+     *
+     * ```javascript
+     *  {
+     *     category: 'Category',
+     *     operator: 'Operator',
+     *     value: 'Value',
+     *  }
+     * ```
+     */
+    translations: PropTypes.object,
+    /**
+     * if operator suppose to have difference in select box and the chip  use this option
+     * Example:
+     *
+     * ```javascript
+     *  operatorSigns: {
+     *     textoptions: { '!empty':'!n', 'empty':n, '==':'==', '!=':'!=' },
+     *     text: { '!empty':'!n', 'empty':n, '==':'==', '!=':'!=', 'contains':'in', '!contains':'!in' },
+     *   },
+     * ```
+     */
+    operatorSigns: PropTypes.object,
   }
 
   static defaultProps = {
@@ -177,11 +203,16 @@ export default class Tokenizer extends Component {
     placeholder: '',
     onChange() {},
     operators: {
-		textoptions: [ '!empty', 'empty', '==', '!='],
-		text: [ '!empty', 'empty','==', '!=', 'contains', '!contains'],
-		number: [ '!empty', 'empty','==', '!=', '<', '<=', '>', '>='],
-		date: [ '!empty', 'empty','==', '!=', '<', '<=', '>', '>=', 'in last days' ],
-		bool: [ '!empty', 'empty','is on', 'is off' ]
+      textoptions: [ '!empty', 'empty', '==', '!='],
+      text: [ '!empty', 'empty', '==', '!=', 'contains', '!contains'],
+      number: [ '!empty', 'empty', '==', '!=', '<', '<=', '>', '>='],
+      date: [ '!empty', 'empty', '==', '!=', '<', '<=', '>', '>=', 'in last days' ],
+      bool: [ '!empty', 'empty', 'is on', 'is off' ],
+    },
+    translations: {
+      category: 'Category',
+      operator: 'Operator',
+      value: 'Value',
     },
   }
 
@@ -220,12 +251,11 @@ export default class Tokenizer extends Component {
     const tokenClasses = {};
     tokenClasses[ this.props.customClasses.token ] = !!this.props.customClasses.token;
     const classList = classNames( tokenClasses );
-    const result = this.state.selected.map( selected => {
-      const mykey = selected.category + selected.operator + selected.value;
+    const result = this.state.selected.map(( selected, index ) => {
 
       return (
         <Token
-          key={ mykey }
+          key={ index }
           className={ classList }
           onRemove={ this._removeTokenForValue }
         >
@@ -255,7 +285,7 @@ export default class Tokenizer extends Component {
         case 'textoptions': return operators.textoptions;
         case 'date': return operators.date;
         case 'number': return operators.number;
-        case 'bool':return operators.bool;
+        case 'bool': return operators.bool;
         default:
           /* eslint-disable no-console */
           console.warn( `WARNING: Unknown category type in tokenizer: "${categoryType}"` );
@@ -270,12 +300,12 @@ export default class Tokenizer extends Component {
 
   _getHeader() {
     if ( this.state.category === '' ) {
-      return 'Category';
+      return this.props.translations.category;
     } else if ( this.state.operator === '' ) {
-      return 'Operator';
+      return this.props.translations.operator;
     }
 
-    return 'Value';
+    return this.props.translations.value;
   }
 
   _getCategoryType( category ) {
@@ -327,6 +357,10 @@ export default class Tokenizer extends Component {
         this._removeTokenForValue(
           this.state.selected[ this.state.selected.length - 1 ]
         );
+        if ( this._getCategoryType( lastSelected.category ) === 'date') {
+          this.setState({});
+          return;
+        }
         this.setState({ category: lastSelected.category, operator: lastSelected.operator });
         if ( this._getCategoryType( lastSelected.category ) !== 'textoptions' ) {
           this.refs.typeahead.refs.inner.setEntryText( lastSelected.value );
@@ -358,12 +392,15 @@ export default class Tokenizer extends Component {
       return;
     }
 
-    if (this.state.operator === '') {
-      if (['!empty', 'empty', 'is on', 'is off'].indexOf( assignValue ) < 0) {
+    if ( this.state.operator === '' ) {
+      if ( this.props.operators.bool.indexOf( assignValue ) < 0 ) {
         this.setState({ operator: assignValue });
-        this.refs.typeahead.refs.inner.setEntryText('');
+        this.refs.typeahead.refs.inner.setEntryText( '' );
         return;
       } else {
+        if ( this.props.operatorSigns [ assignValue ]) {
+          assignValue = this.props.operatorSigns [ assignValue ];
+        }
         this.state.operator = assignValue;
         assignValue = '';
       }

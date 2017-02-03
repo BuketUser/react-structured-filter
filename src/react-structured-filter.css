@@ -74,6 +74,8 @@
 
   margin:3px;
   padding:5px;
+
+  min-width: 100%;
 }
 
 .filter-input-group .filter-category,
@@ -89,7 +91,7 @@
 .filter-tokenizer .typeahead input {
   outline:0;
   border:0px;
-  width:100%;
+  width:99%;
 }
 
 .filter-tokenizer .typeahead input:focus {outline:0;}
