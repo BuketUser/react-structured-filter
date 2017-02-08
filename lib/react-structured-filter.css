@@ -1,18 +1,18 @@
 .filterKeeper {
-	width:1400px;
-	padding: 10px 10px 10px 10px;
-	margin: 10px 10px 10px 10px;
+	width:90%;
+	/* top right bot left */
+	padding: 5px 2% 5px 2%;
 }
 
 .filter-tokenizer {
   width:100%;
-
   background: #fff;
   border: 2px solid #8dbc0d;
   /*border-radius: 5px;*/
   padding:10px;
-  font-size: 90%;
+  font-size: 50%;
   display:table;
+  padding: 5px 5p 5px 5p;
 }
 
 .filter-tokenizer:first-child {
