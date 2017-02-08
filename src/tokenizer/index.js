@@ -394,6 +394,9 @@ export default class Tokenizer extends Component {
 
     if ( this.state.operator === '' ) {
       if ( this.props.operators.bool.indexOf( assignValue ) < 0 ) {
+        if ( this.props.operatorSigns [ assignValue ]) {
+          assignValue = this.props.operatorSigns [ assignValue ];
+        }
         this.setState({ operator: assignValue });
         this.refs.typeahead.refs.inner.setEntryText( '' );
         return;
@@ -401,7 +404,7 @@ export default class Tokenizer extends Component {
         if ( this.props.operatorSigns [ assignValue ]) {
           assignValue = this.props.operatorSigns [ assignValue ];
         }
-        this.state.operator = assignValue;
+        this.setState({ operator: assignValue });
         assignValue = '';
       }
     }
