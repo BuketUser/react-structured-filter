@@ -1,18 +1,15 @@
-.filterKeeper {
-	width:90%;
-	/* top right bot left */
-	padding: 5px 2% 5px 2%;
-}
+
 
 .filter-tokenizer {
-  width:100%;
+  width:96%;
   background: #fff;
   border: 2px solid #8dbc0d;
   /*border-radius: 5px;*/
-  padding:10px;
-  font-size: 50%;
+  padding:5px;
+  font-size: 80%;
   display:table;
-  padding: 5px 5p 5px 5p;
+  margin-top:10px;
+  margin-bottom:10px;
 }
 
 .filter-tokenizer:first-child {
@@ -23,6 +20,7 @@
 
 .filter-tokenizer .token-collection {
   display: table-cell;
+  width:100%;
 }
 
 .filter-tokenizer .typeahead {
@@ -31,12 +29,7 @@
 }
 
 .filter-tokenizer .typeahead-token {
-
-  display:inline-block;
   float:left;
-
-  /*background-color: #eee;
-  border: 1px solid #ccc;*/
   border-radius: 2px;
 
   margin:3px;
@@ -45,6 +38,10 @@
 	background-color: #d4f46c;
     border-bottom: 1px solid rgba(163, 154, 154, 0.17);
     min-width: 5em;
+	max-width: 500px;
+	overflow: hidden;
+	text-overflow:ellipsis;
+	position: relative;
 }
 
 .filter-tokenizer .token-operator {
@@ -67,6 +64,9 @@
   filter: alpha(opacity=30);
   opacity: .3;
   margin-left: 0.5em;
+	position: absolute;
+	right: 2px;
+	top:4px;
 }
 
 .filter-tokenizer .typeahead-token-close:focus,
@@ -79,12 +79,10 @@
 }
 
 .filter-input-group {
-  min-width:100%;
+  min-width:99%;
   overflow:auto;
   display:block;
-
-  margin:3px;
-  padding:5px;
+  padding:0.5%;
 }
 
 .filter-input-group .filter-category,
@@ -97,10 +95,6 @@
   margin-right: 5px;
 }
 
-.typeahead-token  {
-  max-width:200px;
-  overflow-x: hidden;
-}
 
 
 .filter-tokenizer .typeahead input {

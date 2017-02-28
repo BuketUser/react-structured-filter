@@ -393,18 +393,16 @@ export default class Tokenizer extends Component {
     }
 
     if ( this.state.operator === '' ) {
+      let tempValue = assignValue;
+      if ( this.props.operatorSigns [ assignValue ]) {
+        tempValue = this.props.operatorSigns [ assignValue ];
+      }
       if ( this.props.operators.bool.indexOf( assignValue ) < 0 ) {
-        if ( this.props.operatorSigns [ assignValue ]) {
-          assignValue = this.props.operatorSigns [ assignValue ];
-        }
-        this.state.operator = assignValue;
+        this.setState({ operator: tempValue });
         this.refs.typeahead.refs.inner.setEntryText( '' );
         return;
       } else {
-        if ( this.props.operatorSigns [ assignValue ]) {
-          assignValue = this.props.operatorSigns [ assignValue ];
-        }
-        this.state.operator = assignValue;
+        this.state.operator = tempValue;
         assignValue = '';
       }
     }
@@ -416,6 +414,7 @@ export default class Tokenizer extends Component {
     };
 
     this.state.selected.push( newValue );
+    this.setState({ selected: this.state.selected });
     this.refs.typeahead.refs.inner.setEntryText( '' );
     this.props.onChange( this.state.selected );
 
