@@ -35,6 +35,7 @@ export default class Tokenizer extends Component {
      * An array of structures with the components `category` and `type`
      *
      * * _category_: Name of the first thing the user types.
+	 * * _categorykey_: optional key for input and output, is useful if translations are involved
      * * _type_: This can be one of the following:
      *   * _text_: Arbitrary text for the value. No autocomplete options.
      *     Operator choices will be: `==`, `!=`, `contains`, `!contains`.
@@ -53,19 +54,23 @@ export default class Tokenizer extends Component {
      *     [
      *       {
      *         "category": "Symbol",
+				"categorykey": "symbol",
      *         "type": "textoptions",
      *         "options": function() {return ["MSFT", "AAPL", "GOOG"]}
      *       },
      *       {
      *         "category": "Name",
+				"categorykey": "name",
      *         "type": "text"
      *       },
      *       {
      *         "category": "Price",
+				"categorykey": "packet_price",
      *         "type": "number"
      *       },
      *       {
      *         "category": "MarketCap",
+				"categorykey": "market_cap_symbol",
      *         "type": "number"
      *       },
      *       {
@@ -227,6 +232,7 @@ export default class Tokenizer extends Component {
   state = {
     selected: this.getStateFromProps( this.props ),
     category: '',
+    categorykey: '',
     operator: '',
   }
 
@@ -346,6 +352,7 @@ export default class Tokenizer extends Component {
         this.setState({ operator: '' });
       } else if ( this.state.category !== '' ) {
         this.setState({ category: '' });
+        this.setState({ categorykey: '' });
       } else {
         // No tokens
         if ( !this.state.selected.length ) {
@@ -361,7 +368,7 @@ export default class Tokenizer extends Component {
           this.setState({});
           return;
         }
-        this.setState({ category: lastSelected.category, operator: lastSelected.operator });
+        this.setState({ category: lastSelected.category, categorykey: lastSelected.categorykey, operator: lastSelected.operator });
         if ( this._getCategoryType( lastSelected.category ) !== 'textoptions' ) {
           this.refs.typeahead.refs.inner.setEntryText( lastSelected.value );
         }
@@ -388,6 +395,10 @@ export default class Tokenizer extends Component {
 
     if ( this.state.category === '' ) {
       this.setState({ category: assignValue });
+      const thisOption = this.props.options.find( option => option.category === assignValue );
+      if ( thisOption !== 'undefined' ) {
+        this.setState({ categorykey: thisOption.categorykey });
+      }
       this.refs.typeahead.refs.inner.setEntryText( '' );
       return;
     }
@@ -409,6 +420,7 @@ export default class Tokenizer extends Component {
 
     const newValue = {
       category: this.state.category,
+      categorykey: this.state.categorykey,
       operator: this.state.operator,
       value: assignValue,
     };
