@@ -69,7 +69,7 @@
     "clean": "rimraf lib",
     "prebuild": "npm run lint && npm run clean",
     "build": "NODE_ENV=production babel src --out-dir lib && robocopy src/react-structured-filter.css lib/react-structured-filter.css",
-	"build:win": "SET NODE_ENV=production && babel src --out-dir lib && robocopy src/react-structured-filter.css lib/react-structured-filter.css",
+	"build:win": "copy src\react-structured-filter.css lib\react-structured-filter.css /Y && SET NODE_ENV=production && babel src --out-dir lib",
     "docs": "cd docs && react-docgen ../src/tokenizer/index.js | ./buildDocs.sh",
     "release:major": "npm version major && npm publish && git push --follow-tags",
     "release:minor": "npm version minor && npm publish && git push --follow-tags",

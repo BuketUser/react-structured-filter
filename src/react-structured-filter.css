@@ -1,15 +1,12 @@
 
 
 .filter-tokenizer {
-  width:96%;
-  background: #fff;
-  border: 2px solid #8dbc0d;
-  /*border-radius: 5px;*/
-  padding:5px;
+  width:100%;
+  background-color: inherit;
   font-size: 80%;
   display:table;
-  margin-top:10px;
-  margin-bottom:10px;
+  white-space: nowrap;
+  position: relative;
 }
 
 .filter-tokenizer:first-child {
@@ -20,7 +17,7 @@
 
 .filter-tokenizer .token-collection {
   display: table-cell;
-  width:100%;
+  padding: 4px;
 }
 
 .filter-tokenizer .typeahead {
@@ -29,19 +26,20 @@
 }
 
 .filter-tokenizer .typeahead-token {
-  float:left;
-  border-radius: 2px;
-
-  margin:3px;
-  padding:5px;
-  
+	position: relative;
+	display:inline-block;
+  font-size: 11px;
+  line-height: 20px;
+	float: left;
+	border-radius: 2px;
+	margin:4px;
+	padding:4px 20px 4px 5px;
 	background-color: #d4f46c;
     border-bottom: 1px solid rgba(163, 154, 154, 0.17);
-    min-width: 5em;
-	max-width: 500px;
+    min-width: 50px;
+	max-width:200px;
 	overflow: hidden;
-	text-overflow:ellipsis;
-	position: relative;
+	text-overflow: ellipsis;
 }
 
 .filter-tokenizer .token-operator {
@@ -50,10 +48,18 @@
 }
 
 .filter-tokenizer .token-value {
-  font-weight: bold;
+	font-weight: bold;
 }
 
 .filter-tokenizer .typeahead-token-close{
+	position: absolute;
+  padding: 8px 5px 8px 5px;
+	top: 5px;
+    right: 6px;
+	  height: 29px;
+    width: 20px;
+    margin: -5px;
+    display: block;
   float: right;
   font-size: 17px;
   font-weight: bold;
@@ -63,26 +69,31 @@
   text-shadow: 0 1px 0 #fff;
   filter: alpha(opacity=30);
   opacity: .3;
-  margin-left: 0.5em;
-	position: absolute;
-	right: 2px;
-	top:4px;
 }
 
 .filter-tokenizer .typeahead-token-close:focus,
 .filter-tokenizer .typeahead-token-close:hover {
-  color: #000;
-  text-decoration: none;
+  text-shadow: none;
+  color: white;
+  background-color: #ff6347;
   cursor: pointer;
-  filter: alpha(opacity=60);
-  opacity: .6;
+  opacity: 1;
 }
 
+
+.filter-tokenizer .typeahead-token-close:hover .filter-tokenizer .typeahead-token {
+  background-size: 6px 6px;
+  background-image: linear-gradient(-45deg, rgba(0, 0, 0, 0) 46%, #ffe18b 49%, #ffe18b 51%, rgba(0, 0, 0, 0) 55%);
+}
+
+
 .filter-input-group {
-  min-width:99%;
+  min-width:95%;
+  font-size: 11px;
   overflow:auto;
   display:block;
-  padding:0.5%;
+  margin:3px;
+  padding:5px;
 }
 
 .filter-input-group .filter-category,
@@ -91,10 +102,8 @@
   overflow:auto;
   display: block;
   float:left;
-  font-weight: bold;
   margin-right: 5px;
 }
-
 
 
 .filter-tokenizer .typeahead input {
