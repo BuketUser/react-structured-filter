@@ -408,18 +408,24 @@ export default class Tokenizer extends Component {
     let assignValue = value || '';
 
     if ( this.state.category === '' ) {
-      this.setState({ category: assignValue });
-      const thisOption = this.props.options.find( option => option.category === assignValue );
-      if ( thisOption !== 'undefined' ) {
-        this.setState({ categorykey: thisOption.categorykey });
+      const categoryOptions = this._getOptionsForTypeahead();
+      if ( categoryOptions.indexOf( assignValue ) !== -1 ) {
+        this.setState({ category: assignValue });
+        const thisOption = this.props.options.find( option => option.category === assignValue );
+        if ( thisOption !== 'undefined' ) {
+          this.setState({ categorykey: thisOption.categorykey });
+        }
+        this.refs.typeahead.refs.inner.setEntryText( '' );
+        return;
+      } else {
+        this.refs.typeahead.refs.inner.setEntryText( '' );
+        return;
       }
-      this.refs.typeahead.refs.inner.setEntryText( '' );
-      return;
     }
 
     if ( this.state.operator === '' ) {
       const operatorOptions = this._getOptionsForTypeahead();
-      if (operatorOptions.indexOf(assignValue)>0) {
+      if ( operatorOptions.indexOf( assignValue ) !== -1 ) {
         let tempValue = assignValue;
         if ( this.props.operatorSigns [ assignValue ]) {
           tempValue = this.props.operatorSigns [ assignValue ];
@@ -433,6 +439,7 @@ export default class Tokenizer extends Component {
           assignValue = '';
         }
       } else {
+        this.refs.typeahead.refs.inner.setEntryText( '' );
         return;
       }
     }
