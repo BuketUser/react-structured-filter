@@ -161,6 +161,11 @@ export default class Tokenizer extends Component {
      */
     onChange: PropTypes.func,
     /**
+   * Event handler triggered whenever no filter is being entered
+   * is ment as a way to triger actions on double enter
+   */
+    onFullEnter: PropTypes.func,
+    /**
      * A mapping of datatypes to operators.
      * Resolved by merging with default operators.
      * Example:
@@ -207,6 +212,7 @@ export default class Tokenizer extends Component {
     customClasses: {},
     placeholder: '',
     onChange() {},
+    onFullEnter() {},
     operators: {
       textoptions: [ '!empty', 'empty', '==', '!='],
       text: [ '!empty', 'empty', '==', '!=', 'contains', '!contains'],
@@ -338,6 +344,14 @@ export default class Tokenizer extends Component {
 
 
   _onKeyDown( event ) {
+    // enter case
+    if (event.keyCode === _keyevent2.default.DOM_VK_ENTER || event.keyCode === _keyevent2.default.DOM_VK_RETURN ) {
+      if( this.state.category === '' ) {
+        this.props.onFullEnter();
+      }
+      return;
+    }
+
     // We only care about intercepting backspaces
     if ( event.keyCode !== KeyEvent.DOM_VK_BACK_SPACE ) {
       return;
@@ -404,17 +418,22 @@ export default class Tokenizer extends Component {
     }
 
     if ( this.state.operator === '' ) {
-      let tempValue = assignValue;
-      if ( this.props.operatorSigns [ assignValue ]) {
-        tempValue = this.props.operatorSigns [ assignValue ];
-      }
-      if ( this.props.operators.bool.indexOf( assignValue ) < 0 ) {
-        this.setState({ operator: tempValue });
-        this.refs.typeahead.refs.inner.setEntryText( '' );
-        return;
+      const operatorOptions = this._getOptionsForTypeahead();
+      if (operatorOptions.indexOf(assignValue)>0) {
+        let tempValue = assignValue;
+        if ( this.props.operatorSigns [ assignValue ]) {
+          tempValue = this.props.operatorSigns [ assignValue ];
+        }
+        if ( this.props.operators.bool.indexOf( assignValue ) < 0 ) {
+          this.setState({ operator: tempValue });
+          this.refs.typeahead.refs.inner.setEntryText( '' );
+          return;
+        } else {
+          this.state.operator = tempValue;
+          assignValue = '';
+        }
       } else {
-        this.state.operator = tempValue;
-        assignValue = '';
+        return;
       }
     }
 
