@@ -31,54 +31,54 @@ import '../react-structured-filter.css';
 export default class Tokenizer extends Component {
 
   static propTypes = {
-    /**
-     * An array of structures with the components `category` and `type`
-     *
-     * * _category_: Name of the first thing the user types.
-	 * * _categorykey_: optional key for input and output, is useful if translations are involved
-     * * _type_: This can be one of the following:
-     *   * _text_: Arbitrary text for the value. No autocomplete options.
-     *     Operator choices will be: `==`, `!=`, `contains`, `!contains`.
-     *   * _textoptions_: You must additionally pass an options value which
-     *     will be a function that returns the list of options choices as an
-     *     array (for example `function getOptions() {return ["MSFT", "AAPL",
-     *     "GOOG"]}`). Operator choices will be: `==`, `!=`.
-     *   * _number_: Arbitrary text for the value. No autocomplete options.
-     *     Operator choices will be: `==`, `!=`, `<`, `<=`, `>`, `>=`.
-     *   * _date_: Shows a calendar and the input must be of the form
-     *     `MMM D, YYYY H:mm A`. Operator choices will be: `==`, `!=`, `<`, `<=`, `>`,
-     *     `>=`.
-     *
-     * Example:
-     *
-     *     [
-     *       {
-     *         "category": "Symbol",
-				"categorykey": "symbol",
-     *         "type": "textoptions",
-     *         "options": function() {return ["MSFT", "AAPL", "GOOG"]}
-     *       },
-     *       {
-     *         "category": "Name",
-				"categorykey": "name",
-     *         "type": "text"
-     *       },
-     *       {
-     *         "category": "Price",
-				"categorykey": "packet_price",
-     *         "type": "number"
-     *       },
-     *       {
-     *         "category": "MarketCap",
-				"categorykey": "market_cap_symbol",
-     *         "type": "number"
-     *       },
-     *       {
-     *         "category": "IPO",
-     *         "type": "date"
-     *       }
-     *     ]
-     */
+  /**
+   * An array of structures with the components `category` and `type`
+   *
+   * * _category_: Name of the first thing the user types.
+  * * _categorykey_: optional key for input and output, is useful if translations are involved
+   * * _type_: This can be one of the following:
+   *   * _text_: Arbitrary text for the value. No autocomplete options.
+   *     Operator choices will be: `==`, `!=`, `contains`, `!contains`.
+   *   * _textoptions_: You must additionally pass an options value which
+   *     will be a function that returns the list of options choices as an
+   *     array (for example `function getOptions() {return ["MSFT", "AAPL",
+   *     "GOOG"]}`). Operator choices will be: `==`, `!=`.
+   *   * _number_: Arbitrary text for the value. No autocomplete options.
+   *     Operator choices will be: `==`, `!=`, `<`, `<=`, `>`, `>=`.
+   *   * _date_: Shows a calendar and the input must be of the form
+   *     `MMM D, YYYY H:mm A`. Operator choices will be: `==`, `!=`, `<`, `<=`, `>`,
+   *     `>=`.
+   *
+   * Example:
+   *
+   *     [
+   *       {
+   *         "category": "Symbol",
+  "categorykey": "symbol",
+   *         "type": "textoptions",
+   *         "options": function() {return ["MSFT", "AAPL", "GOOG"]}
+   *       },
+   *       {
+   *         "category": "Name",
+  "categorykey": "name",
+   *         "type": "text"
+   *       },
+   *       {
+   *         "category": "Price",
+  "categorykey": "packet_price",
+   *         "type": "number"
+   *       },
+   *       {
+   *         "category": "MarketCap",
+  "categorykey": "market_cap_symbol",
+   *         "type": "number"
+   *       },
+   *       {
+   *         "category": "IPO",
+   *         "type": "date"
+   *       }
+   *     ]
+   */
     options: PropTypes.array,
 
     /**
@@ -345,7 +345,7 @@ export default class Tokenizer extends Component {
 
   _onKeyDown( event ) {
     // enter case
-    if (event.keyCode === _keyevent2.default.DOM_VK_ENTER || event.keyCode === _keyevent2.default.DOM_VK_RETURN ) {
+    if (event.keyCode === KeyEvent.DOM_VK_ENTER || event.keyCode === KeyEvent.default.DOM_VK_RETURN ) {
       if( this.state.category === '' ) {
         this.props.onFullEnter();
       }
