@@ -345,8 +345,8 @@ export default class Tokenizer extends Component {
 
   _onKeyDown( event ) {
     // enter case
-    if (event.keyCode === KeyEvent.DOM_VK_ENTER || event.keyCode === KeyEvent.default.DOM_VK_RETURN ) {
-      if( this.state.category === '' ) {
+    if (event.keyCode === KeyEvent.DOM_VK_ENTER || event.keyCode === KeyEvent.DOM_VK_RETURN ) {
+      if ( this.state.category === '' ) {
         this.props.onFullEnter();
       }
       return;
