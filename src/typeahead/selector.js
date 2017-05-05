@@ -82,6 +82,10 @@ export default class TypeaheadSelector extends Component {
     }
 
     const newSelection = this.getSelectionForIndex( newIndex );
+    if ( Object.keys( this.refs ).indexOf( newSelection ) > -1 ) {
+      this.refs[ newSelection ].refs.anchor.scrollIntoView();
+    }
+    
     this.setState({
       selectionIndex: newIndex,
       selection: newSelection,
