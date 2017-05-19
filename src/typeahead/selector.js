@@ -1,8 +1,8 @@
 import {
   default as React,
   Component,
-  PropTypes,
 } from 'react';
+import PropTypes from 'prop-types';
 import TypeaheadOption from './option';
 import classNames from 'classnames';
 
@@ -85,7 +85,7 @@ export default class TypeaheadSelector extends Component {
     if ( Object.keys( this.refs ).indexOf( newSelection ) > -1 ) {
       this.refs[ newSelection ].refs.anchor.scrollIntoView();
     }
-    
+
     this.setState({
       selectionIndex: newIndex,
       selection: newSelection,

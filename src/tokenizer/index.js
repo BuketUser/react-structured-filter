@@ -1,8 +1,8 @@
 import {
   default as React,
   Component,
-  PropTypes,
 } from 'react';
+import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import Token from './token';
 import KeyEvent from '../keyevent';
@@ -214,9 +214,9 @@ export default class Tokenizer extends Component {
     onChange() {},
     onFullEnter() {},
     operators: {
-      textoptions: [ '!empty', 'empty', '==', '!='],
-      text: [ '!empty', 'empty', '==', '!=', 'contains', '!contains'],
-      number: [ '!empty', 'empty', '==', '!=', '<', '<=', '>', '>='],
+      textoptions: [ '!empty', 'empty', '==', '!=' ],
+      text: [ '!empty', 'empty', '==', '!=', 'contains', '!contains' ],
+      number: [ '!empty', 'empty', '==', '!=', '<', '<=', '>', '>=' ],
       date: [ '!empty', 'empty', '==', '!=', '<', '<=', '>', '>=', 'in last days' ],
       bool: [ '!empty', 'empty', 'is on', 'is off' ],
     },
@@ -264,7 +264,6 @@ export default class Tokenizer extends Component {
     tokenClasses[ this.props.customClasses.token ] = !!this.props.customClasses.token;
     const classList = classNames( tokenClasses );
     const result = this.state.selected.map(( selected, index ) => {
-
       return (
         <Token
           key={ index }
@@ -273,7 +272,6 @@ export default class Tokenizer extends Component {
         >
           { selected }
         </Token>
-
       );
     }, this );
     return result;
@@ -345,7 +343,7 @@ export default class Tokenizer extends Component {
 
   _onKeyDown( event ) {
     // enter case
-    if (event.keyCode === KeyEvent.DOM_VK_ENTER || event.keyCode === KeyEvent.DOM_VK_RETURN ) {
+    if ( event.keyCode === KeyEvent.DOM_VK_ENTER || event.keyCode === KeyEvent.DOM_VK_RETURN ) {
       if ( this.state.category === '' ) {
         this.props.onFullEnter();
       }
@@ -378,11 +376,15 @@ export default class Tokenizer extends Component {
         this._removeTokenForValue(
           this.state.selected[ this.state.selected.length - 1 ]
         );
-        if ( this._getCategoryType( lastSelected.category ) === 'date') {
+        if ( this._getCategoryType( lastSelected.category ) === 'date' ) {
           this.setState({});
           return;
         }
-        this.setState({ category: lastSelected.category, categorykey: lastSelected.categorykey, operator: lastSelected.operator });
+        this.setState({
+          category: lastSelected.category,
+          categorykey: lastSelected.categorykey,
+          operator: lastSelected.operator,
+        });
         if ( this._getCategoryType( lastSelected.category ) !== 'textoptions' ) {
           this.refs.typeahead.refs.inner.setEntryText( lastSelected.value );
         }

@@ -3,13 +3,13 @@
 import {
   default as React,
   Component,
-  PropTypes,
 } from 'react';
+import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import classNames from 'classnames';
 import moment from 'moment';
 import fuzzy from 'fuzzy';
-import listensToClickOutside from 'react-onclickoutside/decorator';
+import listensToClickOutside from 'react-onclickoutside/decorator'; // outdated in react-onclickoutside v5.0
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.min.css';
 
