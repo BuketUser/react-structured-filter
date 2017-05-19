@@ -1,8 +1,8 @@
 import {
   default as React,
   Component,
-  PropTypes,
 } from 'react';
+import PropTypes from 'prop-types';
 
 /**
  * Encapsulates the rendering of an option that has been "selected" in a
