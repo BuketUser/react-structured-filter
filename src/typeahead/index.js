@@ -9,7 +9,7 @@ import ReactDOM from 'react-dom';
 import classNames from 'classnames';
 import moment from 'moment';
 import fuzzy from 'fuzzy';
-import listensToClickOutside from 'react-onclickoutside/decorator'; // outdated in react-onclickoutside v5.0
+// import onClickOutside from 'react-onclickoutside';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.min.css';
 
@@ -100,8 +100,8 @@ class Typeahead extends Component {
   }
 
   setEntryText( value ) {
-    if ( this.refs.entry != null ) {
-      ReactDOM.findDOMNode( this.refs.entry ).value = value;
+    if ( this.entry != null ) {
+      ReactDOM.findDOMNode( this.entry ).value = value;
     }
     this._onTextEntryUpdated();
   }
@@ -123,7 +123,7 @@ class Typeahead extends Component {
 
     return (
       <TypeaheadSelector
-        ref="sel"
+        ref={ comp => { this.sel = comp; } }
         options={ this.state.visible }
         header={ this.state.header }
         onOptionSelected={ this._onOptionSelected }
@@ -133,7 +133,7 @@ class Typeahead extends Component {
   }
 
   _onOptionSelected( option ) {
-    const nEntry = ReactDOM.findDOMNode( this.refs.entry );
+    const nEntry = ReactDOM.findDOMNode( this.entry );
     nEntry.focus();
     nEntry.value = option;
     this.setState({
@@ -147,8 +147,8 @@ class Typeahead extends Component {
 
   _onTextEntryUpdated() {
     let value = '';
-    if ( this.refs.entry != null ) {
-      value = ReactDOM.findDOMNode( this.refs.entry ).value;
+    if ( this.entry != null ) {
+      value = ReactDOM.findDOMNode( this.entry ).value;
     }
     this.setState({
       visible: this.getOptionsForValue( value, this.state.options ),
@@ -158,28 +158,28 @@ class Typeahead extends Component {
   }
 
   _onEnter( event ) {
-    if ( !this.refs.sel.state.selection ) {
+    if ( !this.sel.state.selection ) {
       return this.props.onKeyDown( event );
     }
 
-    this._onOptionSelected( this.refs.sel.state.selection );
+    this._onOptionSelected( this.sel.state.selection );
   }
 
   _onEscape() {
-    this.refs.sel.setSelectionIndex( null );
+    this.sel.setSelectionIndex( null );
   }
 
   _onTab() {
-    const option = this.refs.sel.state.selection ?
-      this.refs.sel.state.selection : this.state.visible[ 0 ];
+    const option = this.sel.state.selection ?
+      this.sel.state.selection : this.state.visible[ 0 ];
     this._onOptionSelected( option );
   }
 
   eventMap() {
     const events = {};
 
-    events[ KeyEvent.DOM_VK_UP ] = this.refs.sel.navUp;
-    events[ KeyEvent.DOM_VK_DOWN ] = this.refs.sel.navDown;
+    events[ KeyEvent.DOM_VK_UP ] = this.sel.navUp;
+    events[ KeyEvent.DOM_VK_DOWN ] = this.sel.navDown;
     events[ KeyEvent.DOM_VK_RETURN ] = events[ KeyEvent.DOM_VK_ENTER ] = this._onEnter;
     events[ KeyEvent.DOM_VK_ESCAPE ] = this._onEscape;
     events[ KeyEvent.DOM_VK_TAB ] = this._onTab;
@@ -203,7 +203,7 @@ class Typeahead extends Component {
 
     // If there are no visible elements, don't perform selector navigation.
     // Just pass this up to the upstream onKeydown handler
-    if ( !this.refs.sel ) {
+    if ( !this.sel ) {
       return this.props.onKeyDown( event );
     }
 
@@ -252,10 +252,10 @@ class Typeahead extends Component {
 
   inputRef() {
     if ( this._showDatePicker()) {
-      return this.refs.datepicker.refs.dateinput.refs.entry;
+      return this.datepicker.dateinput.entry;
     }
 
-    return this.refs.entry;
+    return this.entry;
   }
 
   render() {
@@ -274,12 +274,12 @@ class Typeahead extends Component {
       if ( !defaultDate.isValid()) defaultDate = moment().format( 'YYYY-MM-DD' );
       return (
         <span
-          ref="input"
+          ref={ comp => { this.input = comp; } }
           className={ classList }
           onFocus={ this._onFocus }
         >
         <DatePicker
-          ref={ 'datepicker' }
+          ref={ comp => { this.datepicker = comp; } }
           dateFormat={ "YYYY-MM-DD" }
           selected={ moment() }
           onChange={ this._handleDateChange }
@@ -293,12 +293,12 @@ class Typeahead extends Component {
 
     return (
       <span
-        ref="input"
+        ref={ comp => { this.input = comp; } }
         className={ classList }
         onFocus={ this._onFocus }
       >
         <input
-          ref="entry"
+          ref={ comp => { this.entry = comp; } }
           type="text"
           placeholder={ this.props.placeholder }
           className={ inputClassList }
@@ -312,4 +312,4 @@ class Typeahead extends Component {
   }
 }
 
-export default listensToClickOutside( Typeahead );
+export default Typeahead;

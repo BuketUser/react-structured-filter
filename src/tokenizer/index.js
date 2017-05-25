@@ -10,6 +10,9 @@ import Typeahead from '../typeahead';
 import classNames from 'classnames';
 import objectAssign from 'object-assign';
 import '../react-structured-filter.css';
+import onClickOutside from 'react-onclickoutside';
+
+var WrappedTypeahead = onClickOutside( Typeahead );
 
 /**
  * A typeahead that, when an option is selected, instead of simply filling
@@ -357,7 +360,9 @@ export default class Tokenizer extends Component {
 
     // Remove token ONLY when bksp pressed at beginning of line
     // without a selection
-    const entry = ReactDOM.findDOMNode( this.refs.typeahead.refs.inner.inputRef());
+    const typeaheadRef = this.typeahead;
+    const typeaheadObj = typeaheadRef.getInstance();
+    const entry = ReactDOM.findDOMNode( typeaheadObj.inputRef());
     if ( entry.selectionStart === entry.selectionEnd &&
         entry.selectionStart === 0 ) {
       if ( this.state.operator !== '' ) {
@@ -386,7 +391,7 @@ export default class Tokenizer extends Component {
           operator: lastSelected.operator,
         });
         if ( this._getCategoryType( lastSelected.category ) !== 'textoptions' ) {
-          this.refs.typeahead.refs.inner.setEntryText( lastSelected.value );
+          typeaheadObj.setEntryText( lastSelected.value );
         }
       }
       event.preventDefault();
@@ -407,6 +412,8 @@ export default class Tokenizer extends Component {
   }
 
   _addTokenForValue( value ) {
+    const typeaheadRef = this.typeahead;
+    const typeaheadObj = typeaheadRef.getInstance();
     let assignValue = value || '';
 
     if ( this.state.category === '' ) {
@@ -417,12 +424,11 @@ export default class Tokenizer extends Component {
         if ( thisOption !== 'undefined' ) {
           this.setState({ categorykey: thisOption.categorykey });
         }
-        this.refs.typeahead.refs.inner.setEntryText( '' );
-        return;
-      } else {
-        this.refs.typeahead.refs.inner.setEntryText( '' );
+        typeaheadObj.setEntryText( '' );
         return;
       }
+      typeaheadObj.setEntryText( '' );
+      return;
     }
 
     if ( this.state.operator === '' ) {
@@ -434,16 +440,14 @@ export default class Tokenizer extends Component {
         }
         if ( this.props.operators.bool.indexOf( assignValue ) < 0 ) {
           this.setState({ operator: tempValue });
-          this.refs.typeahead.refs.inner.setEntryText( '' );
+          typeaheadObj.setEntryText( '' );
           return;
-        } else {
-          this.state.operator = tempValue;
-          assignValue = '';
         }
-      } else {
-        this.refs.typeahead.refs.inner.setEntryText( '' );
-        return;
+        this.state.operator = tempValue;
+        assignValue = '';
       }
+      typeaheadObj.setEntryText( '' );
+      return;
     }
 
     const newValue = {
@@ -455,7 +459,7 @@ export default class Tokenizer extends Component {
 
     this.state.selected.push( newValue );
     this.setState({ selected: this.state.selected });
-    this.refs.typeahead.refs.inner.setEntryText( '' );
+    typeaheadObj.setEntryText( '' );
     this.props.onChange( this.state.selected );
 
     this.setState({
@@ -477,6 +481,19 @@ export default class Tokenizer extends Component {
     return 'text';
   }
 
+  renderTypeahead( classList ) {
+    return ( <WrappedTypeahead ref={ comp => { this.typeahead = comp; } }
+      className={ classList }
+      placeholder={ this.props.placeholder }
+      customClasses={ this.props.customClasses }
+      options={ this._getOptionsForTypeahead() }
+      header={ this._getHeader() }
+      datatype={ this._getInputType() }
+      onOptionSelected={ this._addTokenForValue }
+      onKeyDown={ this._onKeyDown }
+    /> );
+  }
+
   render() {
     const classes = {};
     classes[ this.props.customClasses.typeahead ] = !!this.props.customClasses.typeahead;
@@ -490,16 +507,7 @@ export default class Tokenizer extends Component {
             <div className="filter-category">{ this.state.category } </div>
             <div className="filter-operator">{ this.state.operator } </div>
 
-            <Typeahead ref="typeahead"
-              className={ classList }
-              placeholder={ this.props.placeholder }
-              customClasses={ this.props.customClasses }
-              options={ this._getOptionsForTypeahead() }
-              header={ this._getHeader() }
-              datatype={ this._getInputType() }
-              onOptionSelected={ this._addTokenForValue }
-              onKeyDown={ this._onKeyDown }
-            />
+            { this.renderTypeahead( classList ) }
             </div>
           </div>
       </div>

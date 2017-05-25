@@ -15,7 +15,7 @@
     "moment": "*",
     "prop-types": "^15.5.10",
     "react-datepicker": "^0.46.0",
-    "react-onclickoutside": "^4.9.0"
+    "react-onclickoutside": "^5.11.0"
   },
   "devDependencies": {
     "babel-cli": "^6.7.5",
@@ -36,27 +36,18 @@
     "express": "^4.13.4",
     "faker": "^3.1.0",
     "file-loader": "^0.8.5",
-    "griddle-callback": "^0.2.1",
-    "griddle-react": "^0.3.1",
     "less": "^2.6.0",
     "less-loader": "^2.2.1",
-    "react": "^0.14.0",
     "react-docgen": "^2.8.2",
-    "react-dom": "^0.14.0",
     "react-transform-catch-errors": "^1.0.2",
     "react-transform-hmr": "^1.0.2",
     "redbox-react": "^1.2.2",
     "rimraf": "^2.5.1",
     "style-loader": "^0.13.1",
-    "taffy": "^2.6.2",
     "url-loader": "^0.5.7",
     "webpack": "^1.12.12",
     "webpack-dev-middleware": "^1.5.1",
     "webpack-hot-middleware": "^2.6.4"
-  },
-  "peerDependencies": {
-    "react": "^0.14.0 || ^15.0.0",
-    "react-dom": "^0.14.0 || ^15.0.0"
   },
   "scripts": {
     "example:clean": "rimraf example/dist",
