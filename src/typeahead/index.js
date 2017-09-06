@@ -281,7 +281,7 @@ class Typeahead extends Component {
         <DatePicker
           ref={ comp => { this.datepicker = comp; } }
           dateFormat={ "YYYY-MM-DD" }
-          selected={ moment() }
+          startDate={ moment() }
           onChange={ this._handleDateChange }
           onKeyDown={ this._onKeyDown }
           autoFocus={ true }
