@@ -445,9 +445,10 @@ export default class Tokenizer extends Component {
         }
         this.state.operator = tempValue;
         assignValue = '';
+      } else {
+        typeaheadObj.setEntryText( '' );
+        return;
       }
-      typeaheadObj.setEntryText( '' );
-      return;
     }
 
     const newValue = {
