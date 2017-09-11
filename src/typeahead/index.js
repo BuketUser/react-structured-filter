@@ -301,6 +301,7 @@ class Typeahead extends Component {
           ref={ comp => { this.entry = comp; } }
           type="text"
           placeholder={ this.props.placeholder }
+          autoFocus={ true }
           className={ inputClassList }
           defaultValue={ this.state.entryValue }
           onChange={ this._onTextEntryUpdated }
