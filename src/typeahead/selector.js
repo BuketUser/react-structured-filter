@@ -38,7 +38,10 @@ export default class TypeaheadSelector extends Component {
   }
 
   componentWillReceiveProps() {
-    this.setState({ selectionIndex: null });
+    this.setState({ 
+      selectionIndex: null,
+      selection: null,
+    });
   }
 
   setSelectionIndex( index ) {
