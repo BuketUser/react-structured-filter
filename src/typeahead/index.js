@@ -34,6 +34,7 @@ class Typeahead extends Component {
     placeholder: PropTypes.string,
     onOptionSelected: PropTypes.func,
     onKeyDown: PropTypes.func,
+    isChangeValid: PropTypes.func,
     className: PropTypes.string,
   }
 
@@ -149,6 +150,12 @@ class Typeahead extends Component {
     let value = '';
     if ( this.entry != null ) {
       value = ReactDOM.findDOMNode( this.entry ).value;
+    }
+    if(
+      typeof this.props.isChangeValid==='function' 
+      && this.props.isChangeValid(value)===false
+    ) {
+      return null
     }
     this.setState({
       visible: this.getOptionsForValue( value, this.state.options ),
@@ -303,7 +310,7 @@ class Typeahead extends Component {
           placeholder={ this.props.placeholder }
           autoFocus={ true }
           className={ inputClassList }
-          defaultValue={ this.state.entryValue }
+          value={ this.state.entryValue }
           onChange={ this._onTextEntryUpdated }
           onKeyDown={ this._onKeyDown }
         />

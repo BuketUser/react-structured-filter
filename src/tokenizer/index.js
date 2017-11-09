@@ -57,24 +57,26 @@ export default class Tokenizer extends Component {
    *     [
    *       {
    *         "category": "Symbol",
-  "categorykey": "symbol",
+   *           "categorykey": "symbol",
    *         "type": "textoptions",
    *         "options": function() {return ["MSFT", "AAPL", "GOOG"]}
    *       },
    *       {
    *         "category": "Name",
-  "categorykey": "name",
-   *         "type": "text"
+   *          "categorykey": "name",
+   *         "type": "text",
+   *          "isValid": (v)=>!!v
    *       },
    *       {
    *         "category": "Price",
-  "categorykey": "packet_price",
+   *          "categorykey": "packet_price",
    *         "type": "number"
    *       },
    *       {
    *         "category": "MarketCap",
-  "categorykey": "market_cap_symbol",
-   *         "type": "number"
+   *         "categorykey": "market_cap_symbol",
+   *         "type": "number",
+   *         "isValid": (v)=>!isNaN(+v)
    *       },
    *       {
    *         "category": "IPO",
@@ -236,6 +238,7 @@ export default class Tokenizer extends Component {
     this._onKeyDown = this._onKeyDown.bind( this );
     this._getOptionsForTypeahead = this._getOptionsForTypeahead.bind( this );
     this._removeTokenForValue = this._removeTokenForValue.bind( this );
+    this._getCategory = this._getCategory.bind( this );
   }
 
   state = {
@@ -321,18 +324,24 @@ export default class Tokenizer extends Component {
     return this.props.translations.value;
   }
 
-  _getCategoryType( category ) {
-    let categoryType;
+  _getCategory( category ) {
     let cat = category;
     if ( !category || category === '' ) {
       cat = this.state.category;
     }
     for ( let i = 0; i < this.props.options.length; i++ ) {
       if ( this.props.options[ i ].category === cat ) {
-        categoryType = this.props.options[ i ].type;
-        return categoryType;
+        return this.props.options[ i ];
       }
     }
+  }
+
+  _getCategoryType( category ) {
+    return (this._getCategory( category ) || {}).type;
+  }
+
+  _getCategoryValidation( category ) {
+    return (this._getCategory( category ) || {}).isValid;
   }
 
   _getCategoryOptions() {
@@ -342,7 +351,7 @@ export default class Tokenizer extends Component {
       }
     }
   }
-
+  
 
   _onKeyDown( event ) {
     // enter case
@@ -421,7 +430,7 @@ export default class Tokenizer extends Component {
       if ( categoryOptions.indexOf( assignValue ) !== -1 ) {
         this.setState({ category: assignValue });
         const thisOption = this.props.options.find( option => option.category === assignValue );
-        if ( thisOption !== 'undefined' ) {
+        if ( thisOption !== undefined ) {
           this.setState({ categorykey: thisOption.categorykey });
         }
         typeaheadObj.setEntryText( '' );
@@ -492,6 +501,10 @@ export default class Tokenizer extends Component {
       datatype={ this._getInputType() }
       onOptionSelected={ this._addTokenForValue }
       onKeyDown={ this._onKeyDown }
+      isChangeValid={ ( this.state.category!=='' && this.state.operator!=='') 
+        ? this._getCategoryValidation()
+        : undefined
+      }
     /> );
   }
 
